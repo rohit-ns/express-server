@@ -1,17 +1,17 @@
 
-    function Diamond( n) 
+    function Diamond(n) 
     { 
        
-        var space = n - 1; 
+        let space = n - 1; 
       
 
-        for (var i = 0; i < n; i++) 
+        for (let i = 0; i < n; i++) 
         { 
            
-            for (var j = 0; j < space; j++) 
+            for (let j = 0; j < space; j++) 
                 process.stdout.write(" "); 
        
-            for ( j = 0; j <= i; j++) 
+            for (let j = 0; j <= i; j++) 
             process.stdout.write("* "); 
       
             process.stdout.write("\n"); 
@@ -25,7 +25,7 @@
         for (i = n; i > 0; i--) 
         { 
         
-            for (j = 0; j < space; j++) 
+            for (let j = 0; j < space; j++) 
             process.stdout.write(" "); 
       
     
@@ -39,8 +39,12 @@
     } 
       
   var a=process.argv[2];
-        Diamond(5); 
-          
+  if(a>=2 && a<=10){
+        Diamond(a); 
+  }
+  else{
+    process.stdout.write ("please enter no between 2 to 10 \n");
+  }         
  
 
   
