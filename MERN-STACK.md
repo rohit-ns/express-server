@@ -56,4 +56,3 @@ The MERN stack is a JavaScript stack that’s designed to make the development p
 The main advantage for developers using the MERN stack is that every line of code is written in JavaScript. This is a programming language that’s used everywhere, both for client-side code and server-side code. With one language across tiers, there’s no need for context switching.
 
 ---
-

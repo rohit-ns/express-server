@@ -132,4 +132,3 @@ In the modern era, software is commonly delivered as a service called web apps, 
     for Ruby,rails console for Rails).
    *Running one-time scripts committed into the app’s repo (e.g. php scripts/fix_bad_records.php).
 
-
