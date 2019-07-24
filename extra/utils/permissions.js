@@ -17,7 +17,7 @@ let permissions={
         else 
         {
         console.log("False");
-        return;
+       
         }}
      
         hasPermission("getUsers","head-trainer","all")
