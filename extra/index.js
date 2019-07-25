@@ -1,0 +1,13 @@
+import diamond from './patterns/diamond';
+import equilateral from './patterns/equilateral';
+import hasPermission from './utils/permissions';
+import validateUser from './utils/validation';
+import {users} from './constants';
+diamond(process.argv[2]);
+console.log("--------------------------------------------------------------------------");
+equilateral(process.argv[3]);
+console.log("--------------------------------------------------------------------------");
+validateUser(users);
+console.log("--------------------------------------------------------------------------");
+hasPermission("getUsers","head-trainer","all");
+console.log("**************************************************************************");

@@ -1,12 +1,6 @@
-let permissions = {
-    'getUsers': {
-        all: ['head-trainer'],
-        read : ['trainee', 'trainer'],
-        write : ['trainer'],
-        delete: [],
-    }
-};
-function hasPermission(moduleName, role, permissionType) {
+
+import {permissions} from '.././constants';
+export default function hasPermission(moduleName, role, permissionType) {
         const isAllowed = permissions[moduleName]["all"].includes(role)
                 || permissions[moduleName][permissionType].includes(role);
 
@@ -14,7 +8,7 @@ function hasPermission(moduleName, role, permissionType) {
         
 }
      
-        hasPermission("getUsers","head-trainer","all")
+       
 
 
 
