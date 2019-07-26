@@ -5,9 +5,12 @@
   "main": "index.js",
   "scripts": {
     "start:extra": "npx babel-node extra",
-    "start:patterns":"npx babel-node extra/patterns",
-    "start:utils":"npx babel-node extra/utils"
-    
+    "start:patterns": "npx babel-node extra/patterns",
+    "start:utils": "npx babel-node extra/utils",
+    "start:extraTs": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
+    "nodemon": "nodemon ./dist/index.js",
+    "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
+    "lint:fix": "npm run lint --fix"
   },
   "repository": {
     "type": "git",
@@ -22,6 +25,20 @@
   "devDependencies": {
     "@babel/core": "^7.5.5",
     "@babel/node": "^7.5.5",
-    "@babel/preset-env": "^7.5.5"
+    "@babel/preset-env": "^7.5.5",
+    "husky": "^3.0.1",
+    "tsc-watch": "^2.2.1",
+    "tslint": "^5.18.0",
+    "typescript": "^3.5.3"
+  },
+  "dependencies": {
+    "@types/node": "^12.6.8",
+    "nodemon": "^1.19.1"
+  },
+  "husky": {
+    "hooks": {
+      "pre-commit": "npm test",
+      "pre-push": "npm test"
+    }
   }
 }

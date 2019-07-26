@@ -1,0 +1,14 @@
+import { users } from './constants';
+import diamond from './patterns/diamond';
+import equilateral from './patterns/equilateral';
+import hasPermission from './utils/permissions';
+import validateUser from './utils/validation';
+console.log('DIAMOND');
+diamond(5);
+console.log('EQUILATERAL TRIANGLE');
+equilateral(5);
+console.log('USERS ARE');
+validateUser(users);
+console.log('USERS STATUS');
+hasPermission('getUsers', 'head-trainer', 'all');
+console.log('**************************************************************************');
