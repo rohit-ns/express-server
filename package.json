@@ -4,10 +4,10 @@
   "description": "Diamond and Equilateral Traingle",
   "main": "index.js",
   "scripts": {
-    "start:extra": "npx babel-node extra",
     "start:patterns": "npx babel-node extra/patterns",
     "start:utils": "npx babel-node extra/utils",
     "start:extraTs": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
+    "start": "tsc-watch --project . --onSuccess \"npm run nodemon\"",
     "nodemon": "nodemon ./dist/index.js",
     "lint": "./node_modules/tslint/bin/tslint -c tslint.json -p tsconfig.json --exclude 'node_modules/**/*.{j,t}s'",
     "lint:fix": "npm run lint --fix"
@@ -16,7 +16,7 @@
     "type": "git",
     "url": "git+https://github.com/rohit-ns/express-server.git"
   },
-  "author": "Rohit",
+  "author": "Rohit Kumar",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/rohit-ns/express-server/issues"
@@ -33,6 +33,8 @@
   },
   "dependencies": {
     "@types/node": "^12.6.8",
+    "dotenv": "^8.0.0",
+    "express": "^4.17.1",
     "nodemon": "^1.19.1"
   },
   "husky": {
