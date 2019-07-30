@@ -1,7 +1,7 @@
 import * as bodyParser from 'body-parser';
 import * as  express from 'express';
-import { middleware2 } from './libs/routes/errorHandler';
-import { middleware1 } from './libs/routes/notFoundRoute';
+import { errorHandlerMiddleware } from './libs/routes/errorHandler';
+import { notFoundRouteMiddleware } from './libs/routes/notFoundRoute';
 const app = express();
 export default class Server {
     constructor(private config) {
@@ -15,8 +15,8 @@ export default class Server {
        app.use( '/health-check' , (req , res ) => {
             res.send('I am ok');
         });
-       app.use(middleware1);
-       app.use('/api', middleware2);
+       app.use(errorHandlerMiddleware);
+       app.use('/api', notFoundRouteMiddleware);
     }
     public bootstrap() {
         this.setupRoutes();
