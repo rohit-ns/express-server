@@ -14,8 +14,9 @@ export default class Server {
             res.send('I am ok');
         });
         app.use('/api', router);
+        
+        app.use(notFoundRouteMiddleware);
         app.use(errorHandlerMiddleware);
-        app.use('/api', notFoundRouteMiddleware);
     }
     public bootstrap() {
         this.setupRoutes();
