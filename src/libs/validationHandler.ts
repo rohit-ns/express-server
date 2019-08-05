@@ -139,7 +139,7 @@ const validationHandler = (config) => ( req , res , next ) => {
     next();
 }
 
-    // export default validationHandler;
+//     export default validationHandler;
 // switch(req.method) {
 // case 'POST':
 //     console.log('INSIDE POST');
