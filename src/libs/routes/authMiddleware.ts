@@ -11,8 +11,9 @@ export default (moduleName,permissionType) => (req,res,next) => {
     const userInfo = jwt.verify(token,config.secretKey)
     
     const role = userInfo.role;
+    console.log('Token is:',role);
 //     hasPermission(moduleName,permissionType,role);
-//     console.log('User info decoded',userInfo);
+       console.log('User info decoded',userInfo);
 //     next();
     
 // } catch(err) {
