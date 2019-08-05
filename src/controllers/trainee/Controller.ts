@@ -2,11 +2,14 @@ import { Request, Response } from 'express';
 class TraineeController {
     public get(req: Request , res: Response) {
     console.log('INSIDE GET :::::TRAINEE');
-    res.send([
-        {
-            name: 'fake response',
-        },
-        ]);
+    res.send({
+        data: {
+            id: 1,
+            name: 'trainee1',
+            },
+        message: 'Trainee get successfully',
+        status: 'OK',
+        });
 }
     public create(req: Request  , res: Response) {
     console.log('INSIDE TRAINEE CREATE');
