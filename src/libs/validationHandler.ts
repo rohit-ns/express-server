@@ -1,11 +1,11 @@
-import { isObject } from "util";
+import { isObject } from 'util';
 const validationHandler = (config) => ( req , res , next ) => {
     console.log('config is', config);
-    const body ='body';
+    const body = 'body';
     console.log(req[body]);
-    console.log('Config keys are:::::',Object.keys[config]);
-//config.id.custom(req.body.id);
-//config['id'].custom(req['body']['id']);
+    console.log('Config keys are:::::', Object.keys[config]);
+// config.id.custom(req.body.id);
+// config['id'].custom(req['body']['id']);
     if (req.method === 'POST') {
         for (const key in config) {
             console.log('Inside Post');
@@ -17,7 +17,7 @@ const validationHandler = (config) => ( req , res , next ) => {
                     next({
                         status: 400,
                         error: 'Wrong type',
-                        message: 'ID should be string only'
+                        message: 'ID should be string only',
                     });
                 }
             } else if (key in req['body'] && key === 'name') {
@@ -28,7 +28,7 @@ const validationHandler = (config) => ( req , res , next ) => {
                     next({
                         status: 400,
                         error: 'Wrong type',
-                        message: 'name can only be alphanumeric'
+                        message: 'name can only be alphanumeric',
                     });
                     console.log('Error in name');
                 }
@@ -37,16 +37,16 @@ const validationHandler = (config) => ( req , res , next ) => {
                 next({
                     status: 404,
                     error: 'Wrong Input',
-                    message: 'ID and name both should be given'
+                    message: 'ID and name both should be given',
                 });
             }
         }
     }
 
     if (req.method === 'DELETE') {
-        console.log("In Delete method");
+        console.log('In Delete method');
         const key = Object.keys(req.query)[0];
-        const keyCheck = new RegExp('^[0-9]*$')
+        const keyCheck = new RegExp('^[0-9]*$');
         if (keyCheck.test(key)) {
             console.log('Key is deleted');
         } else {
@@ -54,15 +54,14 @@ const validationHandler = (config) => ( req , res , next ) => {
             next({
                 status: 404,
                 error: config['id']['errorMessage'],
-                message: 'Key must be number'
+                message: 'Key must be number',
             });
         }
     }
 
     if (req.method === 'GET') {
-        console.log("In GET method");
-        if (req['query'] === null) {
-            
+        console.log('In GET method');
+        if (req['query'] === null) {            
         } else {
             for (const key in config) {
                 if (key === 'skip') {
