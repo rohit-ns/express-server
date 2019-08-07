@@ -1,50 +1,50 @@
 import * as mongoose from 'mongoose';
-const kittySchema = new mongoose.Schema({       
-    name: String
-  });
-const Kitten = mongoose.model('Kitten', kittySchema);    
+import userRepository from './seedData';
+ const UserSchema = new mongoose.Schema({
+     name: String
+   });
+const Kitten = mongoose.model('users', UserSchema);
 class Database {
-    public static open (mongoUri){
-        mongoose.connect(mongoUri, {useNewUrlParser: true} ,(error) => {
-            if(error){
-                console.log("connection error",error);
+    public static open(mongoUri) {
+        mongoose.connect(mongoUri, {useNewUrlParser: true} , (error) => {
+            if (error) {
+                console.log('connection error', error);
             }
-            console.log("Successfully Connected Mongoose");
-            
+            console.log('Successfully Connected Mongoose');
         });
-        playWithMango()
+        userRepository();
     }
-    public static Disconnect(){
+    public static Disconnect() {
         mongoose.disconnect();
         console.log('Successfully Disconnect Mongoose');
     }
 }
-function playWithMango() {
-    saveKitten({name:'Trainning'})
-        .then(res => {
-            console.log('the response is ',res)
-            return Kitten.find({name:"Trainning"})
-        })
-        .then(res => {
-            console.log('kitten are ',res);
-        })
-        .then(()=>{
-            Database.Disconnect();
-        })
-        .catch(error => {
-            console.log('the response is ',error);
-        })
-}
+// function playWithMango() {
+//     saveKitten({name:'Trainning'})
+//         .then(res => {
+//             console.log('the response is ',res)
+//             return Kitten.find({name:"Trainning"})
+//         })
+//         .then(res => {
+//             console.log('kitten are ',res);
+//         })
+//         .then(()=>{
+//             Database.Disconnect();
+//         })
+//         .catch(error => {
+//             console.log('the response is ',error);
+//         })
+// }
 
-function saveKitten (data){
-    return new Promise((resolve,reject) => {
-        const kitty = new Kitten(data);
-        kitty.save((error,res) => {
-            if(error){
-                return reject(error);
-            }
-            resolve(res);
-        })
-    })
-}
+// function saveKitten (data){
+//     return new Promise((resolve,reject) => {
+//         const kitty = new Kitten(data);
+//         kitty.save((error,res) => {
+//             if(error){
+//                 return reject(error);
+//             }
+//             resolve(res);
+//         })
+//     })
+// }
 export default Database;

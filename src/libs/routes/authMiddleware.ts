@@ -18,7 +18,7 @@ export default (moduleName, permissionType) => (req , res , next) => {
 //     console.log('Error is::::',err);
 //     next('Unauthorised Access');
 // }
-    if (hasPermission(moduleName ,role , permissionType)) {
+    if (hasPermission(moduleName, role, permissionType)) {
     next();
     }
       else {
