@@ -1,6 +1,6 @@
 import * as bodyParser from 'body-parser';
-import { Database } from './libs';
 import * as  express from 'express';
+import { Database } from './libs';
 import { errorHandlerMiddleware } from './libs/routes/errorHandler';
 import { notFoundRouteMiddleware } from './libs/routes/notFoundRoute';
 import router from './router';
@@ -27,8 +27,8 @@ export default class Server {
     }
     public run() {
         const{
-            config: { port, mongoUri},} = this;
-            Database.open(mongoUri);  
+        config: { port, mongoUri} } = this;
+        Database.open(mongoUri);
         app.listen(port);
     }
 }
