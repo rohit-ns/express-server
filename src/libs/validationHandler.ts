@@ -6,38 +6,41 @@ const validationHandler = (config) => ( req , res , next ) => {
     console.log('Config keys are:::::', Object.keys[config]);
 // config.id.custom(req.body.id);
 // config['id'].custom(req['body']['id']);
+    for (const key in config) {
     if (req.method === 'POST') {
-        for (const key in config) {
-            console.log('Inside Post');
-            if (key in req['body'] && key === 'id') {
-                if (typeof req['body']['id'] === 'string') {
+        console.log('Inside Post');
+        if (key in req['body'] && key === 'id') {
+            if (typeof req['body']['id'] === 'string') {
                     console.log('Yes ID is string');
-                } else {
-                    console.log('No ID is not string');
-                    next({
-                        status: 400,
-                        error: 'Wrong type',
-                        message: 'ID should be string only',
-                    });
-                }
-            } else if (key in req['body'] && key === 'name') {
+            }
+            else {
+                console.log('No ID is not string');
+                next({
+                    error: 'Wrong type',
+                    message: 'ID should be string only',
+                    status: 400,
+                });
+            }
+        }
+        else if (key in req['body'] && key === 'name') {
                 const regexs = new RegExp(config['name']['regex']);
                 if (regexs.test(req['body']['name'])) {
                     console.log('Name is corrrect');
                 } else {
                     next({
-                        status: 400,
                         error: 'Wrong type',
                         message: 'name can only be alphanumeric',
+                        status: 400,
                     });
                     console.log('Error in name');
                 }
-            } else {
+        }
+        else {
                 console.log('Error');
                 next({
-                    status: 404,
                     error: 'Wrong Input',
                     message: 'ID and name both should be given',
+                    status: 404,
                 });
             }
         }
@@ -52,45 +55,46 @@ const validationHandler = (config) => ( req , res , next ) => {
         } else {
             console.log('you need to pass key in parameters');
             next({
-                status: 404,
                 error: config['id']['errorMessage'],
                 message: 'Key must be number',
+                status: 404,
             });
         }
     }
-
     if (req.method === 'GET') {
         console.log('In GET method');
-        if (req['query'] === null) {            
-        } else {
-            for (const key in config) {
+        for (const key in config) {
+        if (req['query'] === null) {
+            console.log('default value 0');
+        }
+         else {
                 if (key === 'skip') {
                     const keyName = Object.keys(req.query)[0];
                     const check = req['query'][keyName];
-                    const keyCheck = new RegExp('^[0-9]*$')
+                    const keyCheck = new RegExp('^[0-9]*$');
                     if (keyCheck.test(check)) {
                         console.log('It is number');
                     } else {
                         console.log('It is not number');
                         next({
-                            status: 400,
                             error: config['skip']['errorMessage'],
-                            message: 'skip value must be number'
+                            message: 'skip value must be number',
+                            status: 400,
                         });
                     }
                 }
                 if (key === 'limit') {
                     const keyName = Object.keys(req.query)[0];
                     const check = req['query'][keyName];
-                    const keyCheck = new RegExp('^[0-9]*$')
+                    const keyCheck = new RegExp('^[0-9]*$');
                     if (keyCheck.test(check)) {
                         console.log('It is number');
                     } else {
                         console.log('It is not number');
                         next({
-                            status: 400,
                             error: config['limit']['errorMessage'],
-                            message: 'limit value must be number'
+                            message: 'limit value must be number',
+                            status: 400,
                         });
                     }
                 }
@@ -99,7 +103,7 @@ const validationHandler = (config) => ( req , res , next ) => {
     }
 
     if (req.method === 'PUT') {
-        console.log("In PUT method");
+        console.log('In PUT method');
         for (const key in config) {
             if (key in req['body'] && key === 'id') {
                 if (typeof req['body']['id'] === 'string') {
@@ -107,28 +111,28 @@ const validationHandler = (config) => ( req , res , next ) => {
                 } else {
                     console.log('No ID is not string');
                     next({
-                        status: 400,
                         error: 'Wrong type',
-                        message: 'ID should be string only'
+                        message: 'ID should be string only',
+                        status: 400,
                     });
                 }
             } else if (key in req['body'] && key === 'dataToUpdate') {
                 console.log('key is dataToupdate');
-                req['body']['dataToUpdate']
+                // req['body']['dataToUpdate'];
                 if (isObject(req['body']['dataToUpdate'])) {
-                    console.log("yes dataToUpdate is Object");
+                    console.log('yes dataToUpdate is Object');
                 } else {
                     next({
-                        status: 400,
                         error: 'Wrong type',
-                        message: 'dataToUpdate should be object only'
+                        message: 'dataToUpdate should be object only',
+                        status: 400,
                     });
                 }
             } else {
                 next({
-                    status: 404,
                     error: 'Wrong Input',
-                    message: 'ID and dataToUpdate both should be given'
+                    message: 'ID and dataToUpdate both should be given',
+                    status: 404,
                 });
             }
         }
@@ -136,108 +140,5 @@ const validationHandler = (config) => ( req , res , next ) => {
 
     console.log('Inside validationHandler');
     next();
-}
-
-//     export default validationHandler;
-// switch(req.method) {
-// case 'POST':
-//     console.log('INSIDE POST');
-// for (let key in config) {
-//  if( key in req[body] && key== 'id') {
-//      console.log('INSIDE ID');
-//  if(typeof req['body']['name']== 'string' ){
-//     console.log('id ok');
-// }
-// else{
-//     next('id is required');
-// }
-//  }
-//  else if (key in req[body] && key=='name') {
-//     console.log('INSIDE NAME');
-//     if(typeof req['body']['name']== 'string' ) { 
-//         console.log('name ok');
-//     }
-//     else{
-//         next('name in string format');
-//     }
-//   }
-// else {
-//     next('');
-// } };
-// break;
-
-// case 'DELETE':
-//         console.log('INSIDE DELETE');
-//     for (let key in config) {
-//      if( key in req['query'] && key== 'id') {
-//          console.log('INSIDE ID');
-//     }
-//     else{
-//         next('id is required');
-//     }
-//  };
-// break;
-// case 'GET':
-//     if(req['query']==null) {
-//         console.log('need required')
-//     }else {
-//         console.log('INSIDE GET');
-//     for (let key in config) {
-//       if( key== 'skip') {
-//          console.log('INSIDE GET SKIP');
-//     //  if(typeof req['body']['skip']== 'number' ){
-//     //     console.log('id skip ok');
-//     const check = Object.keys(req.query)[0];
-//     const keycheck = new RegExp('^[0-9]*$')
-//     if(keycheck.test(check)) {
-//         console.log('it is number');
-//     }
-
-//     }
-//     else{
-//         next('skip is required');
-//     }
-// }
-//      else if (key in req['query'] && key=='limit') {
-//         console.log('INSIDE NAME');
-//         if(typeof req['body']['limit']== 'string' ) { 
-//             console.log('name ok');
-//         }
-//         else{
-//             next('name in string format');
-//         }
-//       }
-//     else {
-//         next('');
-//     }} };
-//     break;
-
-// case 'UPDATE':
-//         console.log('INSIDE UPDATE');
-//     for (let key in config) {
-//      if( key in req[body] && key== '') {
-//          console.log('INSIDE ID');
-//      if(typeof req['body']['name']== 'string' ){
-//         console.log('id ok');
-//     }
-//     else{
-//         next('id is required');
-//     }
-//      }
-//      else if (key in req[body] && key=='id') {
-//         console.log('INSIDE ID');
-//         if(typeof req['body']['name']== 'string' ) { 
-//             console.log('name ok');
-//         }
-//         else{
-//             next('name in string format');
-//         }
-//       }
-//     else {
-//         next('');
-// //     } };
-//     break;
-// }
-// next();
-// }
+};
 export default validationHandler;

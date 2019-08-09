@@ -5,32 +5,33 @@ import { UserModel } from './UserModel';
 export default class UserRepository {
     public UserModel;
     constructor() {
-        this.UserModel = UserModel;  
-        //const User = mongoose.model<IUserModel>("User", UserSchema);
+        this.UserModel = UserModel;
     }
-    public get(query, projection,  options) {
-        return UserModel.find(query, projection, options)
-       // .then((res) => {
-            //console.log('User Fetches:::',res)
-      //  })
-        
+    public get(query, projection,  option) {
+        return UserModel.find(query, projection, option);
+      //  .then((res) => {
+      //       console.log('User Fetches:::',res);
+      //  }
+    }
+    public findOne(query) {
+      return UserModel.findOne(query).lean();
     }
     public create(data) {
-       return UserModel.create(data)
+       return UserModel.create(data);
       // .then((res) => {
-        //console.log('User Created:::',res)
+        // console.log('User Created:::',res)
   //  })
     }
     public delete(data) {
-        return UserModel.deleteOne(data)
+        return UserModel.deleteOne(data);
       //  .then((res) => {
-            //console.log('User Deleted:::',res)
+            // console.log('User Deleted:::',res)
        // })
      }
     public update( query, dataToupdate) {
-        return UserModel.updateOne( query, dataToupdate)
+        return UserModel.updateOne( query, dataToupdate);
        // .then((res) => {
-            //console.log('User Updated:::',res)
+            // console.log('User Updated:::',res)
        // })
     }
 }

@@ -1,9 +1,9 @@
-import { Router } from 'express';
+import * as express from 'express';
 import { traineeController } from './Controller';
-import validation from './validation';
-import validationHandler from '../../libs/validationHandler';
 import authMiddleware from './../../libs/routes/authMiddleware';
-const traineeRouter = new Router();
+import validationHandler from '../../libs/validationHandler';
+import validation from './validation';
+const traineeRouter = express.Router();
 traineeRouter.route('/')
 // .get(validationHandler(validation.get), traineeController.get)
 .get(authMiddleware('getUsers', 'read') , traineeController.get)

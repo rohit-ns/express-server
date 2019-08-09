@@ -1,14 +1,14 @@
 import * as mongoose from 'mongoose';
 import userRepository from './seedData';
- const UserSchema = new mongoose.Schema({
-     name: String
+const UserSchema = new mongoose.Schema( {
+     name: String,
    });
 const Kitten = mongoose.model('users', UserSchema);
 class Database {
     public static open(mongoUri) {
         mongoose.connect(mongoUri, {useNewUrlParser: true} , (error) => {
             if (error) {
-                console.log('connection error', error);
+            console.log('connection error', error);
             }
             console.log('Successfully Connected Mongoose');
         });
