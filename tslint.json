@@ -96,8 +96,8 @@
     
     "property-declaration": "nospace",
     
-    "variable-declaration": "nospace"
-    
+    "variable-declaration": "nospace",
+    "object-shorthand": ["error", "properties", { "avoidQuotes": true }]
     },
     
     {
@@ -116,14 +116,15 @@
     
     ],
     "no-string-literal":false,
-    
+    "no-shadowed-variable": false,
     "no-internal-module": true,
-    
     "no-trailing-whitespace": true,
     
     "no-null-keyword": true,
+    "only-arrow-functions": false ,
     
     "prefer-const": true,
+    
     
     "jsdoc-format": true,
     
