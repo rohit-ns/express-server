@@ -1,5 +1,5 @@
 import * as mongoose from 'mongoose';
-import userRepository from './seedData';
+import seedData from './seedData';
 const UserSchema = new mongoose.Schema( {
      name: String,
    });
@@ -11,8 +11,9 @@ class Database {
             console.log('connection error', error);
             }
             console.log('Successfully Connected Mongoose');
+            seedData();
         });
-        userRepository();
+        
     }
     public static Disconnect() {
         mongoose.disconnect();
