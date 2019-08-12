@@ -17,7 +17,7 @@ export default class UserController {
     public static login(req, res, next) {
         console.log('Inside Login Request', req.body);
         const { email, password } = req.body;
-        userRepository.findOne({ email: email })
+        userRepository.findOne({ email })
         .then((user) => {
             console.log('Users Fetched');
             if (!user) {
