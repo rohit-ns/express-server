@@ -20,4 +20,4 @@ export default function diamond( n: number) {
     console.log(str);
     str = ' ';
     }
-    }
+}

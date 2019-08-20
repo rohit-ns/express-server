@@ -24,6 +24,10 @@ export default class VersionableSchema extends mongoose.Schema {
                 required: true,
                 type: String,
             },
+            role: {
+                required: true,
+                type: String,
+            },
             updatedAt: {
                 default: Date.now,
                 required: true,

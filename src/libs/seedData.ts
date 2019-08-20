@@ -1,4 +1,4 @@
- import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcrypt';
 import UserRepository from '../Repositories/user/UserRepository';
 import { UserModel } from './../Repositories/user/UserModel';
 import Database from './Database';
@@ -10,37 +10,21 @@ export default () => {
     const hash = bcrypt.hashSync('Training@123', salt);
 
     const user = {
+        UserId: 'Rohit',
         email: 'rohit@gmail.com',
         name : 'rohit',
-        UserId: 'Rohit',
         password: hash,
+        role: 'head-trainer',
+     //   UserId: 'Rohit',
     };
     console.log('The hash for password is:::', hash);
     UserModel.countDocuments({}, function(err, count) {
-    // if (count === 0 ) {
+  //  if (count === 0 ) {
           console.log('NO of User:::', count);
-           userRepository.create(user)
-        .then((res) => {
-          console.log('User Created', res);
-           userRepository.update({ name: 'rohit'}, {name: 'ROHIT'})
-           .then((res) => {
-             console.log('Updated Data:::', res);
-        });
-           userRepository.get({name: 'ROHIT'}, undefined, undefined)
-            .then((res) => {
-            console.log('All Data Fetches:::', res);
-        })
- //                userRepository.delete({name: 'ROHIT'})
-   //              .then((res) => {
-    //            console.log('User Delete', res);
-  //      })
-       .catch((err) => {
+          userRepository.create(user)
+        .catch((err) => {
         console.log('Error Occured', err);
         });
-    });
-//  }      
-//        else {
- //           console.log('There is no User', err);
-//        }
-  });
+   //    }
+   });
 };

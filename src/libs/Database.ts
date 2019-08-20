@@ -5,7 +5,7 @@ const UserSchema = new mongoose.Schema( {
    });
 const Kitten = mongoose.model('users', UserSchema);
 class Database {
-    public static open(mongoUri) {
+    public static open(mongoUri) {     // connection of database
         mongoose.connect(mongoUri, {useNewUrlParser: true} , (error) => {
             if (error) {
             console.log('connection error', error);
@@ -13,9 +13,8 @@ class Database {
             console.log('Successfully Connected Mongoose');
             seedData();
         });
-        
     }
-    public static Disconnect() {
+    public static Disconnect() {      // disconnection of database
         mongoose.disconnect();
         console.log('Successfully Disconnect Mongoose');
     }

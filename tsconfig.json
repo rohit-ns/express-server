@@ -23,6 +23,7 @@
     "include": [
     "src"
     ],
-    "types": ["src/types"]
-    }
+    "types": ["src/types"],
+    "lib": ["es2017.object"],
+}
    

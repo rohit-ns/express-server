@@ -8,7 +8,12 @@ userRouter.route('/login')
 .post(UserController.login);
 userRouter.route('/me')
     // .get(userRoutes.get)
-    .get(authMiddleware('user', 'read') , UserController.getUser);
+    .get(authMiddleware('getUsers', 'all') , UserController.getUser);
+   // .get(UserController.getUser)
+userRouter.route('/update')
+    .put(UserController.updateUser);
+userRouter.route('/del/:id')
+    .delete(UserController.deleteUser);
     // .post(UserController.login)
     // .put(userRoutes.update)
     // .delete(userRoutes.delete);

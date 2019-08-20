@@ -9,4 +9,4 @@ export default function equilateral(n: number) {
     }
     console.log(str);
     str = ' ';
-    }}
+}}
