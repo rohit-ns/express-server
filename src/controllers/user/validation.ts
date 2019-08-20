@@ -1,5 +1,5 @@
 import validateEmail from '../../../extraTs/utils/helpers';
-const  validation = {
+const validation = {
     create: {
         email: {
             custom: (email: string) => {
@@ -13,12 +13,6 @@ const  validation = {
             },
             errorMessage: 'Email is required',
             in: ['body'],
-            required: true,
-        },
-        name: {
-            errorMessage: 'Name is required',
-            in: ['body'],
-            regex: '^[a-zA-Z0-9_]*$',
             required: true,
         },
         password: {
@@ -40,7 +34,7 @@ const  validation = {
             errorMessage: 'Limit is invalid',
             in: ['query'],
             number: true,
-            required: true,
+            required: false,
         },
         skip: {
             default: 0,
@@ -52,9 +46,9 @@ const  validation = {
     },
     update: {
         dataToUpdate: {
-            custom: ((dataToUpdate ) => {
-                return true ;
-            }),
+            custom: (dataToUpdate) => {
+            console.log('');
+            },
             in: ['body'],
             isObject: true,
             required: true,

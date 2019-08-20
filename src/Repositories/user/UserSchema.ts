@@ -16,6 +16,10 @@ export default class UserSchema extends VersionableSchema {
                 required: true,
                 type: String,
             },
+            role: {
+                required: true,
+                type: String,
+            },
         };
         super(baseSchema, options);
     }
