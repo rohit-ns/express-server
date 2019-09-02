@@ -2,14 +2,14 @@ import validateEmail from '../../../extraTs/utils/helpers';
 const validation = {
     create: {
         email: {
-            custom: (email: string) => {
-            if (!validateEmail(email)) {
-                throw {
-                    error: 'incorrect email',
-                    message: 'Please enter email in real format ',
-                    status: 403,
-                };
-            }
+            custom: (value) => {
+            // if (!validateEmail(email)) {
+            //     throw {
+            //         error: 'incorrect email',
+            //         message: 'Please enter email in real format ',
+            //         status: 403,
+            //     };
+            // }
             },
             errorMessage: 'Email is required',
             in: ['body'],

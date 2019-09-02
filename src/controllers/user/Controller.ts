@@ -4,106 +4,94 @@ import { config } from './../../config';
 import UserRepository from './../../Repositories/user/UserRepository';
 const userRepository = new UserRepository();
 
-export default class UserController {
-    public static updateUser(req , res, next) {        // function for update user
-        userRepository.update (
-            { _id: req.body.id }, req.body.dataToUpdate )
-            .then((res) => {
-            if (res === 'user not found') {
-             next ({
-               message: res,
-                status: 404,
-              });
+class UserController {
+    public async login(req, res, next) {           // check login and password
+        try {
+            const { email, password } = req.body;
+            const login = await userRepository.findOne({ email });
+            if (!login ) {
+                return next({
+                    error:'Invalid details',
+                    message:'Email does not nmatch',
+                    status:422,
+                });
             }
-        else {
-            next({
-            data: req.body.dataToUpdate,
-            message: 'User update successfully',
-            status: 200,
-        });
-     }
-    })
-    .catch((err) => {
-            console.log('Error Occured', err);
+            const { password: hashPassword } = login;
+            if (!(bcrypt.compareSync(password, hashPassword))) {
+                return next({
+                    error:'Invalid details',
+                    message:'Password does not match',
+                    status:422,
+                });
+            }
+            const token = jwt.sign(login, config.secretKey);   //{expiresIn: '15m'}
+            // console.log('Token is ::::', token);
+            // console.log('User Response', user);
+            return res.send({
+                message: 'Authorization Token',
+                status: 200,
+                data: token,
             });
-   }
-//    public static User(req , res, next) {
-//     userRepository.update (
-//         { _id: req.body.id }, req.body.dataToUpdate )
-//         .then((ress) => {
-//         if (ress === 'user not found') {
-//          next ({
-//            message: ress,
-//             status: 404,
-//           });
-//         }
-//     else {
-//         next({
-//         data: req.body.dataToUpdate,
-//         message: 'User update successfully',
-//         status: 200,
-//     });
-//  }
-// })
-// .catch((err) => {
-//     console.log('Error Occured', err);
-//     });
-// }
-    public static deleteUser(req, res, next) {        // function for delete user
-        userRepository.delete({_id: req.params.id})
-            .then((result) => {
-                if (result === ' user not found in delete ') {
-                    next({
-                        message: result,
-                        status: 404,
-                    });
-                }
-                else {
-                    res.send({
-                    data: req.params.id,
-                    message: 'User delete successfully',
-                    status: 200,
-                    });
-                }
-        })
-        .catch((err) => {
-            console.log('Error Occured', err);
-        });
+            } 
+        catch (error) {
+            console.error(error);
+        }
     }
-    public static getUser(req, res) {      // details of current user
-        console.log('User', req.user);
+    public getUser(req, res) {      // details of current user
+        console.log('User>>>>>>>>>>>>>>>>>>>', req.user);
         res.send({
+            message: 'Me',
+            status: 200,
             data: req.user,
-            message: 'User Fetch Successfully',
-            status: 'ok',
-         });
-    }
-    public static login(req, res, next) {          // check login and password
-        console.log('Inside Login Request', req.body);
-        const { email, password } = req.body;
-        userRepository.findOne({ email })
-        .then((user) => {
-            console.log('User is :::::', user);
-            if (!user) {
-            return next('User not Found');
-        }
-            const { password: hashpassword } = user;
-            if (!(bcrypt.compareSync( password, hashpassword))) {
-            return next('Password does not match');
-        }
-            const token = jwt.sign(user, config.secretKey);
-            // console.log('Token is::::', token);
-            // console.log('User Response', user.password);
-            res.send({
-            data: {
-                token,
-            },
-            message: 'Authorization Token',
-            status: 'ok',
-        });
-    })
-        .catch((err) => {
-        console.log('Error Occured', err);
+
         });
     }
+    // public static updateUser(req, res, next) {        // function for update user
+    //     userRepository.update(
+    //         { _id: req.body.id }, req.body.dataToUpdate)
+    //         .then((res) => {
+    //             if (res === 'user not found') {
+    //                 next({
+    //                     message: res,
+    //                     status: 404,
+    //                 });
+    //             }
+    //             else {
+    //                 next({
+    //                     data: req.body.dataToUpdate,
+    //                     message: 'User update successfully',
+    //                     status: 200,
+    //                 });
+    //             }
+    //         })
+    //         .catch((err) => {
+    //             console.log('Error Occured', err);
+    //         });
+    // }
+    
+    // public async deleteUser(req, res, next) {
+    //     try {
+    //         const deleteUser = await userRepository.delete({_id: req.params.id});
+    //         if (deleteUser === ' not found in delete ') {
+    //             next({
+    //                 message: deleteUser,
+    //                 status: 404,
+    //             });
+    //         }
+    //         else {
+    //             res.send({
+    //             message: 'User deleted Successfully',
+    //             status: 200,
+    //             data: req.params.id,
+    //             });
+    //         }
+    //     }
+    //     catch (error) {
+    //         console.error(error);
+    //     }
+    // }       
+    
+    
 }
+const userController = new UserController;
+export default userController;
