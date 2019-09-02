@@ -30,18 +30,18 @@ const validation = {
     },
     get: {
         limit: {
+            required: false,
             default: 10,
             errorMessage: 'Limit is invalid',
             in: ['query'],
             number: true,
-            required: false,
         },
         skip: {
+            required: false,
             default: 0,
             errorMessage: 'Skip is invalid',
             in: ['query'],
             number: true,
-            required: false,
         },
     },
     update: {

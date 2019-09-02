@@ -2,7 +2,6 @@ import { isObject } from 'util';
 const validationHandler = (config) => (req, res, next) => {
     for (const key in config) {
         const dataPlace = config[key].in;
-        console.log('>>>>>>>>>',dataPlace);
         for (const keyProperty in config[key]) {
             switch (keyProperty) {
                 case 'required':
