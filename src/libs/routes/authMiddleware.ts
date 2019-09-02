@@ -5,7 +5,6 @@ import UserRepository from '../../Repositories/user/UserRepository';
 const userRepository = new UserRepository();
 
 export default (moduleName, permissionType) => async (req, res, next) => {
-    console.log('>>>>>>>>>>>', moduleName, permissionType)
     try {
         const token = req.headers.authorization;
         const userinfo = jwt.verify(token, config.secretKey);  // verify the token

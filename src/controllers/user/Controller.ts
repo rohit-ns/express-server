@@ -25,8 +25,6 @@ class UserController {
                 });
             }
             const token = jwt.sign(login, config.secretKey);   //{expiresIn: '15m'}
-            // console.log('Token is ::::', token);
-            // console.log('User Response', user);
             return res.send({
                 message: 'Authorization Token',
                 status: 200,
@@ -38,7 +36,6 @@ class UserController {
         }
     }
     public getUser(req, res) {      // details of current user
-        console.log('User>>>>>>>>>>>>>>>>>>>', req.user);
         res.send({
             message: 'Me',
             status: 200,
@@ -90,8 +87,6 @@ class UserController {
     //         console.error(error);
     //     }
     // }       
-    
-    
 }
 const userController = new UserController;
 export default userController;
