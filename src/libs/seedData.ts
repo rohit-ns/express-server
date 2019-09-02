@@ -15,16 +15,12 @@ export default () => {
         name : 'rohit',
         password: hash,
         role: 'head-trainer',
-     //   UserId: 'Rohit',
     };
     console.log('The hash for password is:::', hash);
     UserModel.countDocuments({}, function(err, count) {
-  //  if (count === 0 ) {
+  if (count === 0 ) {
           console.log('NO of User:::', count);
-          userRepository.create(user)
-        .catch((err) => {
-        console.log('Error Occured', err);
-        });
-   //    }
+          return userRepository.create(user)
+     }
    });
 };

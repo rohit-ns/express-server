@@ -36,15 +36,4 @@ class Database {
 //         })
 // }
 
-// function saveKitten (data){
-//     return new Promise((resolve,reject) => {
-//         const kitty = new Kitten(data);
-//         kitty.save((error,res) => {
-//             if(error){
-//                 return reject(error);
-//             }
-//             resolve(res);
-//         })
-//     })
-// }
 export default Database;

@@ -1,8 +1,8 @@
 export const errorHandlerMiddleware = ( error, req, res, next ) => {
   res.send({
-      // error: 'Not Found',
-      message: error,
-      // status: '400',
-      timestamp: new Date(),
+      error: error.error || 'error',
+      message: error.message ||'not found',
+      status: error.status ,
+     timestamp: new Date(),
   });
 };
