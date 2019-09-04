@@ -1,20 +1,20 @@
 import validateEmail from  '.././utils/helpers';
-export default function validateUser(new_users) {
+export default function validateUser(newusers) {
     let validuser = [];
     let invaliduser = [];
 
- new_users.forEach(function(user)  {
- const { traineeEmail: a, reviewerEmail:b } = user; //using destructuring assign value to a,b
-    if (validateEmail(a))  {
-    validuser.push(a);
+ newusers.forEach(function(user)  {
+ const { traineeEmail, reviewerEmail } = user; //using destructuring assign value to a,b
+    if (validateEmail(traineeEmail))  {
+    validuser.push(traineeEmail);
     } else {
-    invaliduser.push(a);
+    invaliduser.push(traineeEmail);
     }
-    if (validateEmail(b)) {
-    validuser.push(b);
+    if (validateEmail(reviewerEmail)) {
+    validuser.push(reviewerEmail);
     }
     else {
-    invaliduser.push(b);
+    invaliduser.push(reviewerEmail);
     }
 }   );
     console.log("\nThe names of valid users are :\n " + validuser + " \nThe count of valid user is:\n " + validuser.length);
