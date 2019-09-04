@@ -8,5 +8,5 @@ const userRouter = express.Router();
 userRouter.route('/login')
     .post(validationHandler(validation.create),userController.login);
 userRouter.route('/me')
-    .get(authMiddleware('getUsers', 'all') ,validationHandler(validation.get), userController.getUser);
+    .get(authMiddleware('getUsers', 'read') ,validationHandler(validation.get), userController.getUser);
   export default userRouter;
