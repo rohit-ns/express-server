@@ -1,63 +1,84 @@
 import * as bcrypt from 'bcrypt';
 import { Request, Response } from 'express';
 import UserRepository from './../../Repositories/user/UserRepository';
-
+import { UserModel } from '../../Repositories/user/UserModel';
 const userRepository = new UserRepository();
 class TraineeController {
-    public async get(req: Request, res: Response , next) {
-        try{
-        const { skip = 0, limit = 0 } = req.query;
-        const query = {
-            limit: parseInt(limit, 10),
-            skip: parseInt(skip, 10),
-        };
-        const records = await userRepository.getAll({
-            deletedAt: { $exists: false },
-            role: 'trainee'
-        }, undefined, query);
-        const count: number = records.length;
-        console.log('INSIDE GET TRAINEE');
-        res.send(
-            {    
-                message: 'Successfully fetched Trainees',
-                status: 200,
-                data:{ count,records },
-            },
-        );
-    }
-    catch (error) {
-        return next({
-            error: 'not found',
-            message: 'correction required',
-            status: 403,
-        });
-    }
-}
-    public async create(req: Request, res: Response) {
-        console.log('INSIDE CREATE TRAINEE');
+    public async get(req: Request, res: Response, next: (arg0: { error: string; message: string; status: number; }) => void) {
         try {
-            const saltRounds = 10;
-            const salt = bcrypt.genSaltSync(saltRounds);
-            const hash = bcrypt.hashSync(req.body.password, salt);
-            req.body.password = hash;
-            const data = {
-                role: 'trainee',
-                userId: 'rohit',
-                ...req.body,
+            const { skip = 0, limit = 0 } = req.query;
+            const query = {
+                limit: parseInt(limit, 10),
+                skip: parseInt(skip, 10),
             };
-            const createTrainee = await userRepository.create(data);
-            return res.send({
-                status: 200,
-                message: 'Trainee Created Successfully',
-                data: createTrainee,
-            });
-
+            const records = await userRepository.getAll({
+                deletedAt: { $exists: false },
+                role: 'trainee'
+            }, undefined, query);
+            const count: number = records.length;
+            console.log('INSIDE GET TRAINEE');
+            res.send(
+                {
+                    message: 'Successfully fetched Trainees',
+                    status: 200,
+                    data: { count, records },
+                },
+            );
         }
         catch (error) {
-            console.log('Error Occured', error);
+            return next({
+                error: 'data not found',
+                message: 'correction required',
+                status: 403,
+            });
         }
     }
-    public async update(req, res, next) {
+    public async create(req: Request, res: Response,next) {
+        console.log('INSIDE CREATE TRAINEE');
+        try {
+            const { email } = req.body;
+            UserModel.countDocuments({ email }, async (err, count) => {
+                if (count == 0) {
+                    const saltRounds = 10;
+                    const salt = bcrypt.genSaltSync(saltRounds);
+                    const hash = bcrypt.hashSync(req.body.password, salt);
+                    req.body.password = hash;
+                    const data = {
+                        role: 'trainee',
+                        userId: 'rohit',
+                        ...req.body,
+                    };
+                    // req.body.findOne({email:req.body.email},function(user: any){
+                    //     if(user){
+                    //         throw 'Email Already exist';
+                    //     }
+                    // })                                                                                                                                                                                                                                
+                    const createTrainee = await userRepository.create(data);
+                    delete createTrainee.password;
+                    return res.send({
+                        status: 200,
+                        message: 'Trainee Created Successfully',
+                        data: createTrainee,
+                    });
+
+                } else {
+                    next({
+                        error: 'Invalid email',
+                        message: 'User email already exist',
+                        status: 400,
+                    });
+                }
+            });
+        }
+        catch (error) {
+            next({
+                error: "Invalid details",
+                message: 'Details must be in proper fromat',
+                status: 404,
+            });
+        }
+    }
+    public async update(req: { body: { id: any; dataToUpdate: any; }; }, res: { send: (arg0: { status: number; message: string; data: { id: any; }; }) => void; }, next: { (arg0: { error: string; message: string; status: number; }): void; (arg0: { error: string; message: string; status: number; }): void; }) {
         console.log('INSIDE UPDATE TRAINEE');
         try {
             const result = await userRepository.update({ _id: req.body.id }, req.body.dataToUpdate);
@@ -69,16 +90,20 @@ class TraineeController {
                 });
             }
             next({
-                error:'Unauthorized',
+                error: 'Unauthorized',
                 message: 'id not found',
                 status: 404,
             });
         }
         catch (error) {
-            console.log('Error Occured', error);
+            next({
+                error: 'not found',
+                message: 'id not found in update',
+                status: 404,
+            })
         }
     }
-    public async delete(req, res, next) {        // function for delete trainee
+    public async delete(req: { params: { id: any; }; }, res: { send: (arg0: { status: number; message: string; data: { id: any; }; }) => void; }, next: { (arg0: { message: string; status: number; }): void; (arg0: { error: string; message: string; status: number; }): void; }) {        // function for delete trainee
         console.log('INSIDE DELETE TRAINEE');
         try {
             const result = await userRepository.delete({ _id: req.params.id })
@@ -90,15 +115,15 @@ class TraineeController {
                 });
             }
             next({
-                error:'Unauthorized',
                 message: 'id not found',
                 status: 404,
             });
         }
         catch (error) {
             next({
-                error: error,
-                message:'not found',
+                error: 'not found',
+                message: 'id not found in delete',
+                status: 404,
             })
         }
     }
