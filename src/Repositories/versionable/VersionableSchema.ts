@@ -30,10 +30,10 @@ export default class VersionableSchema extends mongoose.Schema {
             updatedAt: {
                 default: Date.now,
                 required: true,
-                type: String,
+                type: Date,
             },
             updatedBy: {
-                required: true,
+                required: false,
                 type: String,
             },
         }, options);
