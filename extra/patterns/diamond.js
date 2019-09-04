@@ -1,5 +1,5 @@
 
-export default function Diamond(n) {
+export default function diamond(n) {
 
     let space = n - 1;
 

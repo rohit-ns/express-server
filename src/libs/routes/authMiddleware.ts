@@ -14,22 +14,21 @@ export default (moduleName, permissionType) => async (req, res, next) => {
             next('User does not exist');
         }
         req.user = user;
-        console.log('user role',moduleName, userinfo.role, typeof userinfo.role);
+        console.log('user role',moduleName, userinfo.role, permissionType,);
         if (hasPermission(moduleName, userinfo.role, permissionType)) {    //checking the permissions 
-            console.log('user role', userinfo.role, typeof userinfo.role);
             next();
         }
         else {
             next({
                 error: 'Unauthorized',
                 message: 'Unauthorized Access',
-                status: 401,
+                status: 403,
             });
         }
     } catch (error) {
         next({
-            error: error,
-            message: 'Invalid Token',
+            error:'Unauthorized',
+            message: 'Token Expired',
             status: 403,
         });
     }

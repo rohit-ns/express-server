@@ -1,10 +1,11 @@
 export const  permissions = {
-    'getUsers': {
+    getUsers: {
         all: ['head-trainer'],
-        read : ['trainee', 'trainer'],
-        write : ['trainer'],
-        delete: [],
-    }}
+        delete: ['head-trainer'],
+        read : ['trainee', 'trainer','head-trainer'],
+        write :['trainer','head-trainer'],
+    },
+}
 export const users =[
         {
         traineeEmail: 'trainee@successive.tech',reviewerEmail: 'reviewer1@successive.tech'},  

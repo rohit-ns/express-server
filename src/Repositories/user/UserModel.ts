@@ -1,11 +1,11 @@
 import * as mongoose from 'mongoose';
 import IUserModel from './IUserModel';
 import UserSchema from './UserSchema';
-const toConvert = {
-    transform: (doc, ret) => {
+const toConvert = {       // Set the id from the retrun object value which will be a string.
+    transform: (doc, ret) => {     // transform for sending as json
         ret.id = ret._id;
         delete ret._id;
-        delete ret._v;
+        delete ret.__v;
     },
     virtuals: true,
 };

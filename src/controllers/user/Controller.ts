@@ -9,39 +9,43 @@ class UserController {
         try {
             const { email, password } = req.body;
             const login = await userRepository.findOne({ email });
-            if (!login ) {
+            if (!login) {
                 return next({
-                    error:'Invalid details',
-                    message:'Email does not nmatch',
-                    status:422,
+                    error: 'Invalid details',
+                    message: 'Email does not nmatch',
+                    status: 422,
                 });
             }
             const { password: hashPassword } = login;
             if (!(bcrypt.compareSync(password, hashPassword))) {
                 return next({
-                    error:'Invalid details',
-                    message:'Password does not match',
-                    status:422,
+                    error: 'Invalid details',
+                    message: 'Password does not match',
+                    status: 422,
                 });
             }
-            const token = jwt.sign(login, config.secretKey);   //{expiresIn: '15m'}
+            const token = jwt.sign(login, config.secretKey,{expiresIn: '15m'});   //token expiry
             return res.send({
-                message: 'Authorization Token',
+                message: 'User Login Successfully',
                 status: 200,
                 data: token,
             });
-            } 
+        }
         catch (error) {
-            console.error(error);
+            throw error;
         }
     }
-    public getUser(req, res) {      // details of current user
-        res.send({
-            message: 'Me',
-            status: 200,
-            data: req.user,
-
-        });
+    public getUser(req, res) {         // details of current user
+        try {
+            res.send({
+                message: 'User get Successfully',
+                status: 200,
+                data: req.user,
+            });
+        }
+        catch (error) {
+            throw error;
+        }
     }
     // public static updateUser(req, res, next) {        // function for update user
     //     userRepository.update(
@@ -65,7 +69,7 @@ class UserController {
     //             console.log('Error Occured', err);
     //         });
     // }
-    
+
     // public async deleteUser(req, res, next) {
     //     try {
     //         const deleteUser = await userRepository.delete({_id: req.params.id});
