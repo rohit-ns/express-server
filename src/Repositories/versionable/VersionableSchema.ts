@@ -1,10 +1,10 @@
 import * as mongoose from 'mongoose';
-import { stringify } from 'querystring';
 export default class VersionableSchema extends mongoose.Schema {
     constructor(options: any, collections: any) {
         const versionedOptions = Object.assign({
             createdAt: {
                 default: Date.now,
+                required: true,
                 type: Date,
                 },
             createdBy: {
@@ -16,7 +16,7 @@ export default class VersionableSchema extends mongoose.Schema {
                 type: Date,
             },
             deletedBy: {
-                optional: true,
+                optional: false,
                 type: String,
             },
             originalId: {
@@ -29,7 +29,7 @@ export default class VersionableSchema extends mongoose.Schema {
             },
             updatedAt: {
                 default: Date.now,
-                required: true,
+                required: false,
                 type: Date,
             },
             updatedBy: {

@@ -22,12 +22,12 @@ export default (moduleName, permissionType) => async (req, res, next) => {
             next({
                 error: 'Unauthorized',
                 message: 'Unauthorized Access',
-                status: 403,
+                status: 401,
             });
         }
     } catch (error) {
         next({
-            error:'Unauthorized',
+            error:'Forbidden',
             message: 'Token Expired',
             status: 403,
         });

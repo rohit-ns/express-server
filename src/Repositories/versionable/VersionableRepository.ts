@@ -9,42 +9,81 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     constructor(modelType) {
         this.modelType = modelType;
     }
-    public async create(options): Promise<D> {   // promise D check,verify and create all schema details
-        const id = await VersionableRepository.generateObjectId();
-        const model = new this.modelType({
-            ...options,
-            _id: id,
-            createdBy: id,
-            originalId: id,
-        });
-        return model.save().then((record) => record.toObject());
-    }
-    public async update(trid, options) {
+    public async create(options, userId?): Promise<D> {   // promise D check,verify and create all schema details
         try {
-            let originalData;
-            const userRepository = new UserRepository();
-            const updateUser = await userRepository.findOne({ originalId: trid, deletedAt: { $exists: false } });
-            originalData = updateUser;
-            const id = VersionableRepository.generateObjectId();
-            const modelCreate = new this.modelType({
-                ...originalData,
+            const id = await VersionableRepository.generateObjectId();
+            const model = new this.modelType({
                 ...options,
                 _id: id,
+                createdBy: userId || id,
+                originalId: id,
             });
-            const record = await this.modelType.create(modelCreate);
-            await record.toObject();
-            const newId = originalData.id;
-            const modelUpdate = new this.modelType({
-                ...originalData,
-                deletedAt: Date.now(),
-            });
-            return this.modelType.updateOne({ _id: newId }, modelUpdate);
-        }
-        catch (error) {
+            return model.save().then((record) => record.toObject());
+        } catch (error) {
             throw error;
         }
     }
-    
+    public async update(traineeId, options) {
+        try {
+            const Update = await this.modelType.findOne({
+                originalId: traineeId,
+                deletedAt: { $exists: false }
+            }).lean();
+            const id = VersionableRepository.generateObjectId();
+            const modelCreate = new this.modelType({
+                ...Update,
+                ...options,
+                _id: id,
+            });
+            const result = await this.modelType.create(modelCreate);
+            await result.toObject();
+            const newId = Update._id;
+            const modelUpdate = new this.modelType({
+                ...Update,
+                deletedAt: Date.now(),
+            });
+            return this.modelType.updateOne({ _id: newId }, modelUpdate);
+        } catch (error) {
+            throw error;
+        }
+
+    }
+    //     public async count(query,options) {
+    //         try{
+    //        const count= await this.modelType.countDocuments({deletedAt: { $exists: false },deletedBy: { $exists: false },
+    //             ...query,
+    //         });
+    //         return count;
+    //     }catch(error){
+    //         throw error;
+    //     }
+    // }
+    // public async update(trid, options) {
+    //     try {
+    //         let originalData;
+    //         const userRepository = new UserRepository();
+    //         const updateUser = await userRepository.findOne({ originalId: trid, deletedAt: { $exists: false } });
+    //         originalData = updateUser;
+    //         const id = VersionableRepository.generateObjectId();
+    //         const modelCreate = new this.modelType({
+    //             ...originalData,
+    //             ...options,
+    //             _id: id,
+    //         });
+    //         const record = await this.modelType.create(modelCreate);
+    //         await record.toObject();
+    //         const newId = originalData.id;
+    //         const modelUpdate = new this.modelType({
+    //             ...originalData,
+    //             deletedAt: Date.now(),
+    //         });
+    //         return this.modelType.updateOne({ _id: newId }, modelUpdate);
+    //     }
+    //     catch (error) {
+    //         throw error;
+    //     }
+    // }
+
     public async delete(id) {
         try {
             let originalData;
@@ -62,7 +101,7 @@ export default class VersionableRepository<D extends mongoose.Document, M extend
     }
 
     public get(query, projection) {
-        return this.modelType.findOne(query,'-__v -password', projection).lean();
+        return this.modelType.findOne(query, '-__v -password -updatedAt', projection).lean();
     }
 
     public getAll(query, projection, options) {

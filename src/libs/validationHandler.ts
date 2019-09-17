@@ -1,11 +1,16 @@
 import { isObject } from 'util';
+
 const validationHandler = (config) => (req, res, next) => {
+    const errMsg = [];
+    let flag = false;
     for (const key in config) {
+        flag = false;
         const dataPlace = config[key].in;
+        const input = req[dataPlace][key];
         for (const keyProperty in config[key]) {
             switch (keyProperty) {
                 case 'required':
-                    if ((key in req[dataPlace]) && req[dataPlace][key] !== null) {
+                    if ((key in req[dataPlace]) && input !== null) {
                         break;
                     }
                     else if (config[key][keyProperty] === false) {
@@ -13,60 +18,67 @@ const validationHandler = (config) => (req, res, next) => {
                             req[inKey][key] = config[key].default;
                         });
                     }
+
                     else {
-                        next({
-                            error: 'error',
-                            message: `${key} is required`,
-                            status: 422,
-                        });
+                        errMsg.push(`${key} is required`);
+                        flag = true;
                     }
+
                     break;
+                    
                 case 'string':
                     const value = req[dataPlace][key];
-                    if (typeof value !== 'string' && value !== '') {
-                        next({
-                            error: 'Wrong type',
-                            message: `${key} should be string only`,
-                            status: 422,
-                        });
+                    if (typeof value !== 'string' && value !== null) {
+                        errMsg.push(`${key} should be string only`);
+                        flag = true;
                     }
                     break;
                 case 'regex':
                     const regexs = new RegExp(config[key][keyProperty]);
                     if (!regexs.test(req[dataPlace][key])) {
-                        next({
-                            error: 'Wrong type',
-                            message: `Enter ${key} in correct format`,
-                            status: 422,
-                        });
+                        errMsg.push(`${key} is not correct`);
+                        flag = true;
                     }
                     break;
+
                 case 'number':
                     const check = req[dataPlace][key];
                     if (isNaN(Number(check))) {
-                        next({
-                            error: config[key].errorMessage,
-                            message: `${key} value must be number`,
-                            status: 422,
-                        });
+                        errMsg.push(`${key} value must be number`);
+                        flag = true;
                     }
                     break;
+
                 case 'isObject':
-                    if (!isObject(req[dataPlace][key])) {
-                        next({
-                            error: 'Wrong Input',
-                            message: `${key} should be Object only`,
-                            status: 400,
-                        });
+                    const object = req[dataPlace][key];
+                    if (!isObject(object) || Object.entries(object).length === 0) {
+                        errMsg.push(`${key} is required`);
+                        flag = true;
+                        break;
                     }
                     break;
+
                 case 'custom':
-                    config[key].custom(req[dataPlace][key]);
+                    const result = config[key].custom(req[dataPlace][key]);
+                    if (result) {
+                        errMsg.push(result);
+                        flag = true;
+                    }
                     break;
                 default:
                     break;
             }
+            if (errMsg.length !== 0 && flag === true) {
+                break;
+            }
         }
+    }
+    if (errMsg.length !== 0) {
+        return next({
+            error: 'Bad Request',
+            message: errMsg,
+            status: 422,
+        });
     }
     next();
 };

@@ -5,17 +5,22 @@ const validation = {
     {
         name: {
             required: true,
+            custom: (name) => {
+                if (!name) {
+                    return 'Name cannot be empty'
+                }
+            },
             in: ['body'],
             regex: '^[a-z A-Z_0-9]+$',
             errorMessage: 'Name is required',
         },
         email: {
+            required: true,
             custom: (email) => {
-                if (email === '') {
-                    throw new Error('Email cannot be empty ');
+                if (!email) {
+                    return 'Email cannot be empty'
                 }
             },
-            required: true,
             in: ['body'],
             regex: '^[^.+-_][a-zA-Z0-9._]+@successive.tech$',
         },
@@ -23,13 +28,9 @@ const validation = {
             required: true,
             in: ['body'],
             errorMessage: 'Password is required',
-            custom: ( password ) => {
-                if ( !password ) {
-                    throw ({
-                        error: 'Invalid input',
-                        message: 'Password cannot be empty',
-                        status: 422,
-                    });
+            custom: (password) => {
+                if (!password) {
+                    return 'Password cannot be empty';
                 }
             },
         },
@@ -67,27 +68,25 @@ const validation = {
         },
         dataToUpdate: {
             required: true,
-            in: ['body'],
-            isObject: true,
-            custom: ((dataToUpdate) => {
+            custom: (dataToUpdate) => {
                 const regex = /^[a-z A-Z]+$/;
                 if (('name' in dataToUpdate && !dataToUpdate.name) && !regex.test(dataToUpdate.name)) {
                     throw ({
-                        error: 'Invalid input',
+                        error: 'Bad Request',
                         message: 'Enter name in correct form',
                         status: 422,
                     });
                 }
                 if ('email' in dataToUpdate && !dataToUpdate.email && !validateEmail(dataToUpdate.email)) {
                     throw ({
-                        error: 'Invalid input',
+                        error: 'Bad Request',
                         message: 'Email cannot be empty',
                         status: 422,
                     });
                 }
                 if ('email' in dataToUpdate && !validateEmail(dataToUpdate.email)) {
                     throw ({
-                        error: 'Invalid input',
+                        error: 'Bad Request',
                         message: 'Email is not in correct format',
                         status: 422,
                     });
@@ -95,13 +94,15 @@ const validation = {
 
                 if ('password' in dataToUpdate && !dataToUpdate.password) {
                     throw ({
-                        error: 'Invalid input',
+                        error: 'Bad Request',
                         message: 'Password cannot be empty',
                         status: 422,
                     });
                 }
 
-            }),
+            },
+            in: ['body'],
+            isObject: true,
         },
     },
 };

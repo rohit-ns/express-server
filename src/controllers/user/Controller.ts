@@ -9,24 +9,25 @@ class UserController {
         try {
             const { email, password } = req.body;
             const login = await userRepository.findOne({ email });
+                
             if (!login) {
                 return next({
-                    error: 'Invalid details',
-                    message: 'Email does not nmatch',
+                    error: 'Invalid Details',
+                    message: 'Email does not match',
                     status: 422,
                 });
             }
             const { password: hashPassword } = login;
             if (!(bcrypt.compareSync(password, hashPassword))) {
                 return next({
-                    error: 'Invalid details',
+                    error: 'Invalid Details',
                     message: 'Password does not match',
                     status: 422,
                 });
             }
             const token = jwt.sign(login, config.secretKey,{expiresIn: '15m'});   //token expiry
             return res.send({
-                message: 'User Login Successfully',
+                message: 'Login Successfully',
                 status: 200,
                 data: token,
             });

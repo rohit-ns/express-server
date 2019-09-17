@@ -2,32 +2,37 @@ import validateEmail from '../../../extraTs/utils/helpers';
 const validation = {
     create: {
         email: {
-            custom: (value) => {
-            // if (!validateEmail(email)) {
-            //     throw {
-            //         error: 'incorrect email',
-            //         message: 'Please enter email in real format ',
-            //         status: 403,
-            //     };
-            // }
+            required: true,
+            custom: (email) => {
+                if (!email) {
+                    return 'Email cannot be empty'
+                }
             },
             errorMessage: 'Email is required',
             in: ['body'],
-            required: true,
+            regex: '^[^.+-_][a-zA-Z0-9._]+@successive.tech$',
+
         },
         password: {
+            required: true,
             errorMessage: 'Password is required',
             in: ['body'],
-            required: true,
+            custom: ( password ) => {
+                if ( !password ) {
+                    return 'Password cannot be empty';
+                }
+            },
+
         },
     },
     delete: {
         id: {
+            required: true,
             errorMessage: 'Id is required',
             in: ['params'],
-            required: true,
         },
     },
+    
     get: {
         limit: {
             required: false,
@@ -44,10 +49,11 @@ const validation = {
             number: true,
         },
     },
+
     update: {
         dataToUpdate: {
             custom: (dataToUpdate) => {
-            console.log('');
+                console.log('');
             },
             in: ['body'],
             isObject: true,

@@ -11,14 +11,14 @@ export default class UserRepository extends VersionableRepository <IUserModel, m
     public get(query, projection)  {
         return super.get(query, projection);
     }
-    public findOne(query) {
-        return UserModel.findOne(query).lean();
+    public async findOne(query) {
+         return await UserModel.findOne(query).lean();
     }
     public update(query, dataToUpdate) {
         return super.update(query, dataToUpdate);
     }
-    public create(data) {
-        return super.create(data);
+    public create(data,userId?) {
+        return super.create(data,userId);
     }
     public delete(data) {
         return super.delete(data);
@@ -26,4 +26,7 @@ export default class UserRepository extends VersionableRepository <IUserModel, m
     public getAll( query, projection, options) {
         return super.getAll(query, projection, options).sort([['name',1]]).lean();
     }
+    // public count(query,options) {
+    //     return super.count(query,options);
+    // }
 }
